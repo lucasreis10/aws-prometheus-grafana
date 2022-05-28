@@ -2,7 +2,7 @@ package main
 
 import (
 	"net/http"
-	"observability/entrypoint"
+	"observability/app/entrypoint"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
