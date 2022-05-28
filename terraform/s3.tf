@@ -3,7 +3,7 @@ resource "random_pet" "bucket" {
 }
 
 locals {
-  bucket_name = "${random_pet.bucket.id}-banana"
+  bucket_name = "${random_pet.bucket.id}-${var.s3_name_complement_bucket}"
 }
 
 resource "aws_s3_bucket" "site" {
