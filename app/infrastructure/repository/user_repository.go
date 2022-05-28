@@ -2,13 +2,14 @@ package repository
 
 import (
 	"fmt"
+	"observability/app/domain"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	uuid "github.com/satori/go.uuid"
 )
 
-func CreateUser(user User) {
+func CreateUser(user domain.User) {
 
 	uuid := uuid.NewV4()
 

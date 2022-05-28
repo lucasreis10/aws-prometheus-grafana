@@ -3,14 +3,13 @@ package entrypoint
 import (
 	"encoding/json"
 	"net/http"
-	"observability/repository"
+	"observability/app/domain"
 
 	"github.com/aws/aws-lambda-go/events"
 )
 
-func HandleCreateUser(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-
-	var user repository.User
+func HandleCreateUser(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) domain
+	var user domain.User
 	err := json.Unmarshal([]byte(req.Body), &user)
 	if err != nil {
 		return events.APIGatewayProxyResponse{
