@@ -8,7 +8,7 @@
 					document.getElementById("my-demo").innerHTML = this.responseText;
 					}
 				};
-				xhttp.open("GET", "https://gu65w0f04f.execute-api.us-east-1.amazonaws.com/default/mylambdafunction", true);
+				xhttp.open("POST", "mylambdafunction", true);
 				xhttp.send();
 
 			}
@@ -21,7 +21,7 @@
 		<br>
 		<br>
 		<br>
-		<h1> <span id="my-demo">Hello Cloud Gurus!</span></h1>
+		<h1> <span id="my-demo">Create User</span></h1>
 		<button onclick="myFunction()">Click me</button>	
 	</div>
 
