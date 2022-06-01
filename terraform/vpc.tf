@@ -1,5 +1,6 @@
 resource "aws_vpc" "us_east_1" {
-  cidr_block = var.cidr_block_vpc
+  cidr_block           = var.cidr_block_vpc
+  enable_dns_hostnames = true
 }
 
 resource "aws_internet_gateway" "igw_us_east_1" {
@@ -18,9 +19,9 @@ resource "aws_route_table" "public_route" {
   vpc_id = aws_vpc.us_east_1.id
 
   route {
-  cidr_block = var.cidr_aws_route_table_public_route
-  gateway_id = aws_internet_gateway.igw_us_east_1.id
-}
+    cidr_block = var.cidr_aws_route_table_public_route
+    gateway_id = aws_internet_gateway.igw_us_east_1.id
+  }
 }
 
 resource "aws_route_table_association" "subnet" {

@@ -18,14 +18,14 @@ resource "aws_security_group" "sg_ec2_instance" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
- ingress {
+  ingress {
     description = "HTTP to EC2"
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
- 
+
 
   ingress {
     description = "PORTAINER to EC2"

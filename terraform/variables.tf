@@ -15,6 +15,12 @@ variable "ec2_instance_type" {
   default = "t2.micro"
 }
 
+variable "ec2_user" {
+  type    = string
+  default = "ec2-user"
+}
+
+
 #S3 Bucket complement name
 variable "s3_name_complement_bucket" {
   type    = string
