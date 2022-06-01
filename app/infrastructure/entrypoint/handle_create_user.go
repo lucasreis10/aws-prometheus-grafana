@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 )
 
-func HandleCreateUser(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) domain
+func HandleCreateUser(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) 
 	var user domain.User
 	err := json.Unmarshal([]byte(req.Body), &user)
 	if err != nil {
