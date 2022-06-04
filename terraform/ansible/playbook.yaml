@@ -2,6 +2,8 @@
     - hosts: ec2_instances
       tasks:
         - name: Upgrade All Packages
+          become: yes
+          become_user: root
           yum:
             name: '*'
             state: latest
@@ -10,9 +12,9 @@
             cmd: sudo amazon-linux-extras install docker -y
             warn: false
         - name: Start Docker Service
-          ansible.buitin.service:
-            name: docker
-            state: started
+          shell:
+            cmd: sudo service docker start
+            warn: false
         - name: Add User Docker On Group
           shell:
             cmd: sudo usermod -a -G docker ec2-user
@@ -21,18 +23,18 @@
           shell:
             cmd: sudo curl -L https://github.com/docker/compose/releases/download/1.25.4/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
             warn: false
-        - name: Copy file with owner and permissions
-          ansible.builtin.copy:
-            src: ../docker-compose/docker-compose.yml
+        - name: Grant Permission Docker-Compose
+          shell:
+            cmd: sudo chmod +x /usr/local/bin/docker-compose
+            warn: false
+        - name: Deploy Docker-Compose file
+          copy:
+            src: ./docker-compose/docker-compose.yml
             dest: /home/ec2-user/stack-compose/
             owner: ec2-user
             group: ec2-user
             mode: '0777'
-        - name: Grant Permission Docker-Compose
-          ansible.builtin.file:
-          path: /usr/local/bin/docker-compose
-          mode: '0777'
-        - name: Start Docker-Compose Stack
-          docker_compose:
-            project_src: /home/ec2-user/stack-compose/
-            file: docker-compose.yml
+        # - name: Start Docker-Compose Stack
+        #   docker_compose:
+        #     project_src: /home/ec2-user/stack-compose/
+        #     file: docker-compose.yml
