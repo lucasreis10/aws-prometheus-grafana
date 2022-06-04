@@ -1,0 +1,40 @@
+---
+    - hosts: ec2_instances
+      tasks:
+        - name: Upgrade All Packages
+          become: yes
+          become_user: root
+          yum:
+            name: '*'
+            state: latest
+        - name: Install Docker
+          shell:
+            cmd: sudo amazon-linux-extras install docker -y
+            warn: false
+        - name: Start Docker Service
+          shell:
+            cmd: sudo service docker start
+            warn: false
+        - name: Add User Docker On Group
+          shell:
+            cmd: sudo usermod -a -G docker ec2-user
+            warn: false
+        - name: Install Docker-Compose
+          shell:
+            cmd: sudo curl -L https://github.com/docker/compose/releases/download/1.25.4/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+            warn: false
+        - name: Grant Permission Docker-Compose
+          shell:
+            cmd: sudo chmod +x /usr/local/bin/docker-compose
+            warn: false
+        - name: Deploy Docker-Compose file
+          copy:
+            src: ./docker-compose/docker-compose.yml
+            dest: /home/ec2-user/stack-compose/
+            owner: ec2-user
+            group: ec2-user
+            mode: '0777'
+        # - name: Start Docker-Compose Stack
+        #   docker_compose:
+        #     project_src: /home/ec2-user/stack-compose/
+        #     file: docker-compose.yml
