@@ -1,0 +1,67 @@
+version: '3'
+
+services:
+
+  prometheus:
+    container_name: prometheus
+    hostname: prometheus
+    image: prom/prometheus:latest
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus:/etc/prometheus
+    restart: unless-stopped
+    command: --web.enable-lifecycle --config.file=/etc/prometheus/prometheus.yml
+  
+  node-exporter:
+    container_name: node-exporter
+    hostname: node-exporter
+    image: prom/node-exporter:latest
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command: 
+      - '--path.procfs=/host/proc' 
+      - '--path.sysfs=/host/sys'
+      - --collector.filesystem.ignored-mount-points
+      - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
+    ports:
+      - 9100:9100
+    restart: unless-stopped
+
+  docker-exporter:
+    container_name: docker-exporter
+    hostname: docker-exporter
+    image: prometheusnet/docker_exporter:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 9417:9417
+    restart: always
+
+  grafana:
+    container_name: grafana
+    hostname: grafana
+    image: grafana/grafana
+    environment:
+      -  GF_SECURITY_ADMIN_USER=admin
+      -  GF_SECURITY_ADMIN_PASSWORD=admin
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+
+  portainer:
+    container_name: portainer
+    hostname: portainer
+    image: portainer/portainer-ce:latest
+    ports:
+      - "9000:9000"
+      - "8000:8000"
+    volumes:
+      - portainer_data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+
+volumes:
+  portainer_data:

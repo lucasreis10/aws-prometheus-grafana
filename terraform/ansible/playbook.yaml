@@ -29,12 +29,26 @@
             warn: false
         - name: Deploy Docker-Compose file
           copy:
-            src: ./docker-compose/docker-compose.yml
-            dest: /home/ec2-user/stack-compose/
+            src: ../docker-compose/docker-compose.yml
+            dest: /home/ec2-user/docker-compose.yml
             owner: ec2-user
             group: ec2-user
-            mode: '0777'
-        # - name: Start Docker-Compose Stack
-        #   docker_compose:
-        #     project_src: /home/ec2-user/stack-compose/
-        #     file: docker-compose.yml
+            mode: 0777
+        - name: Create Prometheus Dir
+          file:
+            path: /home/ec2-user/prometheus/
+            state: directory
+            owner: ec2-user
+            group: ec2-user
+            mode: 0755
+        - name: Copy Prometheus Config file
+          copy:
+            src: ./prometheus/prometheus.yml
+            dest: /home/ec2-user/prometheus/prometheus.yml
+            owner: ec2-user
+            group: ec2-user
+            mode: 0777
+        - name: Start Docker-Compose Stack
+          shell:
+            cmd: sudo /usr/local/bin/docker-compose up -d
+            warn: false

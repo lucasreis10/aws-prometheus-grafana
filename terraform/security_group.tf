@@ -26,11 +26,18 @@ resource "aws_security_group" "sg_ec2_instance" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-
   ingress {
     description = "PORTAINER to EC2"
     from_port   = 9000
     to_port     = 9000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "GRAFANA to EC2"
+    from_port   = 3000
+    to_port     = 3000
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
